@@ -1,0 +1,14 @@
+# Rust build outputs
+**/target/
+
+# VS Code configs
+**/.vscode/
+
+# OS-specific junk
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.log
+*.tmp
+*.bak
