@@ -1,0 +1,297 @@
+{
+    // ============================================================================
+    // VS Code Tasks Configuration for Secure Password Vault
+    // ============================================================================
+    // This file defines automated tasks for common Rust development operations:
+    // - Building the project (cargo build)
+    // - Running the application with arguments (cargo run)
+    // - Running tests (cargo test)
+    // 
+    // These tasks integrate with VS Code's:
+    // - Command Palette (Ctrl+Shift+P → "Tasks: Run Task")
+    // - Build commands (Ctrl+Shift+B)
+    // - Test explorer
+    // - Problem matcher (error/warning navigation)
+    // ============================================================================
+    // Task configuration format version
+    // Version 2.0.0 is the current stable format
+    "version": "2.0.0",
+    // ============================================================================
+    // Task Definitions
+    // ============================================================================
+    // Each task represents a common development operation that can be:
+    // - Run from Command Palette
+    // - Bound to keyboard shortcuts
+    // - Set as default build/test tasks
+    // - Integrated with VS Code's problem detection
+    // ============================================================================
+    "tasks": [
+        // ========================================================================
+        // Task 1: Build Project
+        // ========================================================================
+        // Compiles the Rust project using cargo build
+        // 
+        // What it does:
+        // - Compiles all source files in src/
+        // - Links dependencies from Cargo.toml
+        // - Creates debug binary in target/debug/
+        // - Checks for compilation errors
+        // 
+        // When to use:
+        // - After making code changes
+        // - Before running or testing
+        // - To check for compilation errors
+        // - Set as default: Ctrl+Shift+B runs this automatically
+        // ========================================================================
+        {
+            // Human-readable task name shown in VS Code
+            "label": "cargo build",
+            // Task type: "shell" means run a shell command
+            // Alternative: "process" for direct execution without shell
+            "type": "shell",
+            // Command to execute: cargo (Rust's build tool and package manager)
+            "command": "cargo",
+            // Arguments passed to cargo
+            "args": [
+                "build" // Builds the project in debug mode
+                // For release mode, use: ["build", "--release"]
+            ],
+            // Group configuration: Defines this as a build task
+            "group": {
+                // Type of task group
+                "kind": "build",
+                // Set as default build task
+                // Allows running with Ctrl+Shift+B without selecting from menu
+                "isDefault": true
+            },
+            // Problem matcher: Parses compiler output for errors/warnings
+            // 
+            // $rustc is a built-in VS Code pattern that understands:
+            // - error[E0277]: trait bound not satisfied
+            // - warning: unused variable
+            // - note: required by...
+            // 
+            // Enables:
+            // - Error navigation (F8 to jump to next error)
+            // - Problem panel population (Ctrl+Shift+M)
+            // - Inline error squiggles in editor
+            "problemMatcher": [
+                "$rustc"
+            ]
+        },
+        // ========================================================================
+        // Task 2: Run Application
+        // ========================================================================
+        // Runs the Secure Password Vault with custom arguments
+        // 
+        // What it does:
+        // - Builds the project if needed
+        // - Executes the binary from target/debug/
+        // - Passes user-provided arguments to the program
+        // - Prompts for arguments each time it runs
+        // 
+        // Example uses:
+        // - Run with --help to see usage
+        // - Run with "init" to initialize vault
+        // - Run with "add gmail --username user@gmail.com --generate"
+        // 
+        // The "--" separator is important:
+        // - Arguments before "--" go to cargo
+        // - Arguments after "--" go to your program
+        // ========================================================================
+        {
+            // Task name for the run command
+            "label": "cargo run",
+            // Execute as shell command
+            "type": "shell",
+            // Use cargo to run the program
+            "command": "cargo",
+            // Arguments for cargo run
+            "args": [
+                "run", // Builds (if needed) and runs the binary
+                "--", // Separator: args after this go to the program
+                "${input:args}" // User input: prompts for program arguments
+            ],
+            // Problem matcher to catch compilation errors
+            // Even though this is "run", it may trigger a build first
+            "problemMatcher": [
+                "$rustc"
+            ]
+        },
+        // ========================================================================
+        // Task 3: Run Tests
+        // ========================================================================
+        // Executes all unit and integration tests
+        // 
+        // What it does:
+        // - Compiles test binaries
+        // - Runs all #[test] functions
+        // - Runs integration tests in tests/
+        // - Displays test results and failures
+        // 
+        // Test coverage for this project:
+        // - crypto.rs: Password hashing, encryption roundtrips
+        // - storage.rs: Vault file creation, audit entries
+        // - password_generator.rs: Password length, strength assessment
+        // 
+        // Output shows:
+        // - test result: ok. 15 passed; 0 failed
+        // - Individual test names and durations
+        // - Assertion failures with line numbers
+        // ========================================================================
+        {
+            // Task name for running tests
+            "label": "cargo test",
+            // Execute as shell command
+            "type": "shell",
+            // Use cargo to run tests
+            "command": "cargo",
+            // Arguments for cargo test
+            "args": [
+                "test" // Runs all tests in the project
+                // Options you might add:
+                // - ["test", "test_name"] : Run specific test
+                // - ["test", "--", "--nocapture"] : Show println! output
+                // - ["test", "--", "--test-threads=1"] : Run serially
+            ],
+            // Mark as test task group
+            // Integrates with VS Code's test runner UI
+            "group": "test",
+            // Catch compilation errors in test code
+            "problemMatcher": [
+                "$rustc"
+            ]
+        }
+    ],
+    // ============================================================================
+    // Input Definitions
+    // ============================================================================
+    // Defines interactive inputs that tasks can use
+    // These create prompts when tasks are executed
+    // ============================================================================
+    "inputs": [
+        // ========================================================================
+        // Input: Program Arguments
+        // ========================================================================
+        // Prompts user for arguments to pass to the program
+        // Used by the "cargo run" task
+        // 
+        // Example inputs and their effects:
+        // 
+        // 1. "--help"
+        //    Shows all available commands and options
+        // 
+        // 2. "init"
+        //    Initializes a new vault (prompts for master password)
+        // 
+        // 3. "add gmail --username user@gmail.com --generate"
+        //    Adds Gmail credential with generated password
+        // 
+        // 4. "get gmail --copy"
+        //    Retrieves Gmail password and copies to clipboard
+        // 
+        // 5. "list --verbose"
+        //    Lists all credentials with details
+        // 
+        // 6. "search google"
+        //    Searches for credentials matching "google"
+        // 
+        // 7. "audit --limit 20"
+        //    Shows last 20 audit log entries
+        // ========================================================================
+        {
+            // Unique identifier referenced by tasks: ${input:args}
+            "id": "args",
+            // Type: prompt user for string input
+            // Other types: "pickString" (dropdown), "command" (run command)
+            "type": "promptString",
+            // Prompt text shown to user
+            "description": "Program arguments",
+            // Default value pre-filled in the prompt
+            // User can accept default or type something else
+            // --help is a safe default that shows usage info
+            "default": "--help"
+        }
+    ]
+    // ============================================================================
+    // Usage Examples
+    // ============================================================================
+    // 
+    // Running Tasks:
+    // 1. Open Command Palette: Ctrl+Shift+P (Windows/Linux) or Cmd+Shift+P (Mac)
+    // 2. Type "Tasks: Run Task"
+    // 3. Select the task you want to run
+    // 
+    // Keyboard Shortcuts:
+    // - Ctrl+Shift+B: Runs default build task (cargo build)
+    // - Configure keybindings for other tasks in keybindings.json
+    // 
+    // Task Output:
+    // - Appears in integrated terminal
+    // - Errors appear in Problems panel (Ctrl+Shift+M)
+    // - Click error to jump to source location
+    // 
+    // ============================================================================
+    // Additional Task Ideas
+    // ============================================================================
+    // 
+    // You could add these tasks to this file:
+    // 
+    // 1. Release Build:
+    //    {
+    //        "label": "cargo build --release",
+    //        "command": "cargo",
+    //        "args": ["build", "--release"]
+    //    }
+    //    Optimized binary in target/release/
+    // 
+    // 2. Clean Build:
+    //    {
+    //        "label": "cargo clean",
+    //        "command": "cargo",
+    //        "args": ["clean"]
+    //    }
+    //    Removes target/ directory
+    // 
+    // 3. Check (faster than build):
+    //    {
+    //        "label": "cargo check",
+    //        "command": "cargo",
+    //        "args": ["check"]
+    //    }
+    //    Type-checks without generating code
+    // 
+    // 4. Clippy Lints:
+    //    {
+    //        "label": "cargo clippy",
+    //        "command": "cargo",
+    //        "args": ["clippy"]
+    //    }
+    //    Runs linter for code improvements
+    // 
+    // 5. Format Code:
+    //    {
+    //        "label": "cargo fmt",
+    //        "command": "cargo",
+    //        "args": ["fmt"]
+    //    }
+    //    Auto-formats all Rust files
+    // 
+    // 6. Documentation:
+    //    {
+    //        "label": "cargo doc --open",
+    //        "command": "cargo",
+    //        "args": ["doc", "--open"]
+    //    }
+    //    Generates and opens HTML docs
+    // 
+    // 7. Benchmark Tests:
+    //    {
+    //        "label": "cargo bench",
+    //        "command": "cargo",
+    //        "args": ["bench"]
+    //    }
+    //    Runs benchmark tests (requires benches/ directory)
+    // 
+    // ============================================================================
+}
