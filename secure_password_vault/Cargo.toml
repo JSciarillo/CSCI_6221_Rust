@@ -1,0 +1,139 @@
+# ============================================================================
+# Cargo Package Configuration
+# ============================================================================
+# This is the manifest file for the Secure Password Vault Rust project.
+# It defines package metadata, dependencies, and build configuration.
+# ============================================================================
+
+[package]
+# Package name used for crate identification
+name = "secure_password_vault"
+
+# Semantic version number (major.minor.patch)
+version = "1.0.0"
+
+# Rust edition to use (2021 is the latest stable edition)
+# Determines which language features and defaults are available
+edition = "2021"
+
+# Project authors - team members who developed this application
+authors = ["Owen Chibanda", "Jasmine Sciarillo", "Aryan Bhosale"]
+
+# Brief description of the package for documentation and crate registries
+description = "A secure local password manager built with Rust"
+
+# ============================================================================
+# Dependencies
+# ============================================================================
+# All external crates required by this project, organized by functionality
+# ============================================================================
+
+[dependencies]
+# ----------------------------------------------------------------------------
+# Cryptography Dependencies
+# ----------------------------------------------------------------------------
+# Core cryptographic operations for secure password storage and encryption
+
+# AES-GCM: Provides AES-256-GCM authenticated encryption
+# Used for encrypting credential data with authentication
+aes-gcm = "0.10"
+
+# Argon2: Key derivation function (KDF) for password hashing
+# Uses Argon2id algorithm - winner of Password Hashing Competition
+# Provides resistance against GPU cracking attacks
+argon2 = "0.5"
+
+# Rand: Cryptographically secure random number generation
+# Used for generating salts, nonces, and random passwords
+rand = "0.8"
+
+# SHA2: SHA-256 hashing algorithm implementation
+# Used for integrity checks and additional hashing operations
+sha2 = "0.10"
+
+# Zeroize: Secure memory zeroing to prevent sensitive data leaks
+# Automatically clears sensitive data from memory when dropped
+# The "derive" feature enables the ZeroizeOnDrop derive macro
+zeroize = { version = "1.7", features = ["derive"] }
+
+# Base64: Encoding/decoding for storing binary data as text
+# Used for encoding encrypted data and salts in JSON format
+base64 = "0.21"
+
+# ----------------------------------------------------------------------------
+# Serialization Dependencies
+# ----------------------------------------------------------------------------
+# For converting data structures to/from storage formats
+
+# Serde: Serialization/deserialization framework
+# The "derive" feature enables Serialize and Deserialize macros
+# Core library for converting Rust structs to/from JSON
+serde = { version = "1.0", features = ["derive"] }
+
+# Serde JSON: JSON format support for serde
+# Handles reading/writing vault data to JSON files
+serde_json = "1.0"
+
+# ----------------------------------------------------------------------------
+# CLI (Command Line Interface) Dependencies
+# ----------------------------------------------------------------------------
+# Tools for building an interactive command-line application
+
+# Clap: Command-line argument parser
+# The "derive" feature enables deriving CLI structure from structs
+# Handles subcommands, arguments, help text generation
+clap = { version = "4.5", features = ["derive"] }
+
+# Colored: Terminal color and styling support
+# Used for colorizing output (success messages, errors, tables)
+colored = "2.1"
+
+# Dialoguer: Interactive CLI prompts and confirmations
+# Provides secure password input, confirmations, and user prompts
+dialoguer = "0.11"
+
+# Indicatif: Progress bars and spinners for CLI
+# Shows progress during long operations like vault initialization
+indicatif = "0.17"
+
+# ----------------------------------------------------------------------------
+# Clipboard Dependency
+# ----------------------------------------------------------------------------
+# System clipboard integration
+
+# Clipboard: Cross-platform clipboard access
+# Allows copying passwords to system clipboard for convenience
+clipboard = "0.5"
+
+# ----------------------------------------------------------------------------
+# Utility Dependencies
+# ----------------------------------------------------------------------------
+# General-purpose utilities for various operations
+
+# Chrono: Date and time handling library
+# The "serde" feature enables serialization of DateTime types
+# Used for timestamps in credentials and audit logs
+chrono = { version = "0.4", features = ["serde"] }
+
+# UUID: Universally Unique Identifier generation
+# Features "v4" (random UUIDs) and "serde" (serialization support)
+# Used for generating unique credential IDs
+uuid = { version = "1.7", features = ["v4", "serde"] }
+
+# Directories: Cross-platform directory path utilities
+# Finds appropriate locations for user data (vault storage)
+# Respects OS-specific conventions (e.g., AppData on Windows, ~/.local on Linux)
+directories = "5.0"
+
+# ============================================================================
+# Binary Configuration
+# ============================================================================
+# Defines the executable binary produced by this package
+# ============================================================================
+
+[[bin]]
+# Name of the compiled executable
+name = "secure_password_vault"
+
+# Path to the main entry point source file
+path = "src/main.rs"
