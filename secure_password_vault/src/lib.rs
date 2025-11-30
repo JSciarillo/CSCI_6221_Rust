@@ -105,9 +105,6 @@ pub fn App() -> impl IntoView {
                 }}
             </main>
 
-            <footer class="app-footer">
-                <p>"Built with Rust & Leptos | AES-256-GCM + Argon2id encryption"</p>
-            </footer>
         </div>
     }
 }

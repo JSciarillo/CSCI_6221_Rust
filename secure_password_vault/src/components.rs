@@ -218,7 +218,7 @@ pub fn VaultDashboard(
 
     let handle_delete_vault = move |_| {
     if let Some(window) = web_sys::window() {
-        if window.confirm_with_message("DELETE ENTIRE VAULT?\n\nThis will permanently delete:\n• All credentials\n• Master password\n• All vault data\n\nThis CANNOT be undone!\n\nAre you absolutely sure?").unwrap_or(false) {
+        if window.confirm_with_message("DELETE ENTIRE VAULT?\n\nThis will permanently delete:\n• All credentials\n• Master password\n• All vault data\n\nThis CANNOT be undone!\n\nAre you sure?").unwrap_or(false) {
             //clear local storage
             if let Ok(Some(storage)) = window.local_storage() {
                 let _ = storage.clear();

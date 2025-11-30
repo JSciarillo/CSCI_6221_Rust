@@ -661,7 +661,7 @@ code {
 }
 
 .btn-danger[style*="background-color: #c41e3a"] {
-    background-color: #c41e3a !important;
+    background-color: #dc2626 !important;
 }
 
 .btn-danger[style*="background-color: #c41e3a"]:hover {
