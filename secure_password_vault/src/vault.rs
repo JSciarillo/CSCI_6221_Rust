@@ -1,6 +1,5 @@
-// ============================================================================
-// Vault Module
-// ============================================================================
+//Vault Module
+
 use crate::crypto::{CryptoError, EncryptedData, MasterKey, SecureString, StoredPasswordHash};
 use crate::storage::{StorageError, VaultFile, VaultStorage};
 use chrono::{DateTime, Utc};
@@ -114,7 +113,7 @@ impl Credential {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct CredentialStore {
     credentials: HashMap<String, Credential>,
 }
@@ -185,6 +184,7 @@ impl CredentialStore {
     }
 }
 
+#[derive(Clone)]
 pub struct Vault {
     storage: VaultStorage,
     master_key: Option<MasterKey>,
