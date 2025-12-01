@@ -1,0 +1,26 @@
+﻿# Build artifacts
+/target/
+/dist/
+
+# Local cargo config
+/.cargo/
+
+# IDE files
+/.vscode/
+.idea/
+*.swp
+*.swo
+
+# Vault data - user's personal passwords
+vault.json
+vault_backup.json
+*.vault
+passwords.json
+*.db
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
